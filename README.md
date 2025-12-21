@@ -19,7 +19,7 @@ Clicking this entry will bring up a selection for every boss fight available in 
 
 The latest version can be found for download as on the [releases tab.](https://github.com/QueenSuzie/sa2-stage-select-bosses/releases)
 
-Alternatively, a one click install option is available on [Game Banana].(https://gamebanana.com/mods/640918)
+Alternatively, a one click install option is available on [Game Banana.](https://gamebanana.com/mods/640918)
 
 ## License
 
