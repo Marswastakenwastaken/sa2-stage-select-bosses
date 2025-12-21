@@ -59,7 +59,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
-	<PostBuildEvent>
+    <PostBuildEvent>
       <Command>XCOPY "$(SolutionDir)stage-select-bosses\resource" "$(TargetDir)\" /S /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -84,7 +84,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
-	<PostBuildEvent>
+    <PostBuildEvent>
       <Command>XCOPY "$(SolutionDir)stage-select-bosses\resource" "$(TargetDir)\" /S /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -125,6 +125,9 @@
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
