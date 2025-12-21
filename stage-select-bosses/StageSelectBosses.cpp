@@ -87,8 +87,8 @@ void StageSelectBosses::DrawLevelPanel(int* a1) {
 			njDrawSprite2D_0(&sprite, 88, -90, 0x20u);
 		}
 
-		pos.x = PanelPosX - 110.0;
-		pos.y = PanelPosY - 50.0;
+		pos.x = PanelPosX - 110.0f;
+		pos.y = PanelPosY - 50.0f;
 		sprite.sx = 1.0;
 		sprite.sy = 1.0;
 		sprite.p.x = pos.x;
@@ -119,8 +119,8 @@ void StageSelectBosses::DrawMissionSelectPanel(char savedregs) {
 		nj_constant_material_.b = argb;
 		_constant_attr_and_ = nj_constant_attr_and_;
 
-		panelSprite.sx = 1.0;
-		panelSprite.sy = 1.0;
+		panelSprite.sx = 1.0f;
+		panelSprite.sy = 1.0f;
 		panelSprite.p.x = pos.x;
 		panelSprite.p.y = pos.y;
 		panelSprite.ang = 0;
@@ -137,8 +137,8 @@ void StageSelectBosses::DrawMissionSelectPanel(char savedregs) {
 		_constant_attr_and_ = nj_constant_attr_and_;
 
 		for (int i = 0; i < 18; ++i) {
-			pos.x = (double)(i % 6u) * 38.0 + PanelPosX - 92.5;
-			pos.y = (double)(i / 6u) * 35.0 + PanelPosY - 5.0;
+			pos.x = (double)(i % 6u) * 38.0f + PanelPosX - 92.5f;
+			pos.y = (double)(i / 6u) * 35.0f + PanelPosY - 5.0f;
 			sprite.p.x = pos.x;
 			sprite.p.y = pos.y;
 			sprite.sx = 0.5f;
@@ -155,14 +155,14 @@ void StageSelectBosses::DrawMissionSelectPanel(char savedregs) {
 		}
 
 		int index = (StageSelectBosses::BossSelectRow * 6) + StageSelectBosses::BossSelectCol;
-		sprite.p.x = (double)(index % 6u) * 38.0 + PanelPosX - 92.5;
-		sprite.p.y = (double)(index / 6u) * 35.0 + PanelPosY - 5.0;
+		sprite.p.x = (double)(index % 6u) * 38.0f + PanelPosX - 92.5f;
+		sprite.p.y = (double)(index / 6u) * 35.0f + PanelPosY - 5.0f;
 		sprite.sx = 0.55f;
 		sprite.sy = 0.55f;
 		njDrawSprite2D_0(&sprite, 90, -88, 0x20u);
 
-		pos.x = PanelPosX - 110.0;
-		pos.y = PanelPosY - 50.0;
+		pos.x = PanelPosX - 110.0f;
+		pos.y = PanelPosY - 50.0f;
 		sprite.sx = 1.0;
 		sprite.sy = 1.0;
 		sprite.p.x = pos.x;
@@ -177,13 +177,13 @@ void StageSelectBosses::DrawMissionSelectPanel(char savedregs) {
 }
 
 signed int StageSelectBosses::StageSelectMove(int direction) {
+	// TODO: Refactor this to properly handle all map states.
 	if (!StageSelectBosses::BossIsSelected) {
 		StageSelectLevel curSelection = StageSelectLevels[StageSelectLevelSelection];
 		if (direction == StageSelectBosses::MOVE_UP && curSelection.Level == LevelIDs_GreenHill) {
 			StageSelectBosses::BossIsSelected = true;
 			return 1;
-		}
-		else if (
+		} else if (
 			direction == StageSelectBosses::MOVE_RIGHT &&
 			(
 				(curSelection.Level == LevelIDs_KartRace && curSelection.Character == Characters_Rouge) ||
@@ -193,27 +193,22 @@ signed int StageSelectBosses::StageSelectMove(int direction) {
 			hStageSelectMove.Original(direction);
 			StageSelectBosses::BossIsSelected = true;
 			return 1;
-		}
-		else if (direction == StageSelectBosses::MOVE_LEFT && curSelection.Level == LevelIDs_AquaticMine) {
+		} else if (direction == StageSelectBosses::MOVE_LEFT && curSelection.Level == LevelIDs_AquaticMine) {
 			hStageSelectMove.Original(direction);
 			StageSelectBosses::BossIsSelected = true;
 			return 1;
 		}
-	}
-	else if (direction == StageSelectBosses::MOVE_DOWN) {
+	} else if (direction == StageSelectBosses::MOVE_DOWN) {
 		StageSelectLevelSelection = StageSelectBosses::GREEN_HILL_INDEX;
 		StageSelectBosses::BossIsSelected = false;
 		return 1;
-	}
-	else if (direction == StageSelectBosses::MOVE_UP) {
+	} else if (direction == StageSelectBosses::MOVE_UP) {
 		return 0;
-	}
-	else if (direction == StageSelectBosses::MOVE_RIGHT) {
+	} else if (direction == StageSelectBosses::MOVE_RIGHT) {
 		StageSelectLevelSelection = StageSelectBosses::GREEN_HILL_INDEX;
 		StageSelectBosses::BossIsSelected = false;
 		return hStageSelectMove.Original(direction);
-	}
-	else if (direction == StageSelectBosses::MOVE_LEFT) {
+	} else if (direction == StageSelectBosses::MOVE_LEFT) {
 		StageSelectLevelSelection = StageSelectBosses::GREEN_HILL_INDEX;
 		StageSelectBosses::BossIsSelected = false;
 		return hStageSelectMove.Original(direction);
@@ -245,7 +240,7 @@ void StageSelectBosses::FreeAssets() {
 }
 
 signed int StageSelectBosses::StageSelectMenu() {
-	if (StageSelectBosses::BossIsSelected && (CurrentSubMenu == 2 || CurrentSubMenu == 3)) {
+	if (StageSelectBosses::BossIsSelected && (CurrentSubMenu == 2 || CurrentSubMenu == 3 || CurrentSubMenu == 5)) {
 		if (CurrentSubMenu == 2 && (MenuButtons_Pressed[0] & (Buttons_A | Buttons_Start)) != 0) {
 			PlaySoundProbably(32769, 0, 0, 0);
 			StageSelectData->EnableLevelWindow = 0;
@@ -255,9 +250,43 @@ signed int StageSelectBosses::StageSelectMenu() {
 			StageSelectData->someChar2 = 0;
 			CurrentSubMenu = 3;
 			return 0;
-		}
-		else if (CurrentSubMenu == 3 && (MenuButtons_Pressed[0] & (Buttons_A | Buttons_Start)) != 0) {
-			//
+		} else if (CurrentSubMenu == 3) {
+			if ((MenuButtons_Pressed[0] & Buttons_Left) != 0) {
+				StageSelectBosses::BossSelectCol = StageSelectBosses::BossSelectCol > 0 ? StageSelectBosses::BossSelectCol - 1 : 5;
+				PlaySoundProbably(32768, 0, 0, 0);
+				return 0;
+			} else if ((MenuButtons_Pressed[0] & Buttons_Right) != 0) {
+				StageSelectBosses::BossSelectCol = StageSelectBosses::BossSelectCol < 5 ? StageSelectBosses::BossSelectCol + 1 : 0;
+				PlaySoundProbably(32768, 0, 0, 0);
+				return 0;
+			} else if ((MenuButtons_Pressed[0] & Buttons_Up) != 0) {
+				StageSelectBosses::BossSelectRow = StageSelectBosses::BossSelectRow > 0 ? StageSelectBosses::BossSelectRow - 1 : 2;
+				PlaySoundProbably(32768, 0, 0, 0);
+				return 0;
+			} else if ((MenuButtons_Pressed[0] & Buttons_Down) != 0) {
+				StageSelectBosses::BossSelectRow = StageSelectBosses::BossSelectRow < 2 ? StageSelectBosses::BossSelectRow + 1 : 0;
+				PlaySoundProbably(32768, 0, 0, 0);
+				return 0;
+			} else if ((MenuButtons_Pressed[0] & (Buttons_A | Buttons_Start)) != 0) {
+				PlaySoundProbably(32769, 0, 0, 0);
+				SaveMenuData();
+				LastMenuNumber = 3;
+				ShouldDrawStageMenuData = 0;
+				dword_1AEE2FC = 0;
+				StageSelectData->DrawAtAll = 0;
+				StageSelectData->field_4 = 0;
+				CurrentSubMenu = 5;
+				NextGameMode = 12;
+				return 0;
+			}
+		} else if (CurrentSubMenu == 5) {
+			hStageSelectMenu.Original();
+			int index = (StageSelectBosses::BossSelectRow * 6) + StageSelectBosses::BossSelectCol;
+			std::pair<LevelIDs, Characters> selection = StageSelectBosses::BossStageLevelData[index];
+			SetCurrentLevel(selection.first);
+			CurrentCharacter = selection.second;
+			NextGameMode = GameMode_StartLevel;
+			return 1;
 		}
 	}
 

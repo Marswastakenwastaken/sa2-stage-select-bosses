@@ -8,8 +8,10 @@ DataPointer(DWORD, CanSelectStage, 0x1D1BEC8);
 DataPointer(float, PanelPosX, 0x1A4A968);
 DataPointer(float, PanelPosY, 0x1A4A96C);
 FunctionPointer(void, DrawLevelPane, (int* a1), 0x676690);
-// DELETE THIS
-DataPointer(DWORD, dword_8A0560, 0x8A0560);
+FunctionPointer(void, SaveMenuData, (), 0x673AE0);
+DataPointer(DWORD, LastMenuNumber, 0x1A559E8);
+DataPointer(DWORD, ShouldDrawStageMenuData, 0x1D1BEF8);
+DataPointer(DWORD, dword_1AEE2FC, 0x1AEE2FC);
 
 class StageSelectBosses {
 	public:
@@ -113,6 +115,27 @@ class StageSelectBosses {
 			{ 202, 12, 0, 0, 4, 183, 105, 189, 1, 0 },		// sonic 2
 			{ 175, 15, 0, 0, 111, 183, 198, 190, 1, 0 },	// biolizard - eq
 			{ 154, 12, 0, 0, 4, 191, 81, 197, 1, 0 }		// final hazard (extend a little) - lc
+		};
+
+		static inline std::pair<LevelIDs, Characters> BossStageLevelData[18] = {
+			{ LevelIDs_BigFoot, Characters_Sonic },
+			{ LevelIDs_TailsVsEggman1, Characters_MechTails },
+			{ LevelIDs_SonicVsShadow1, Characters_Sonic },
+			{ LevelIDs_KingBoomBoo, Characters_Knuckles },
+			{ LevelIDs_EggGolemS, Characters_Sonic },
+			{ LevelIDs_KnucklesVsRouge, Characters_Knuckles },
+			{ LevelIDs_TailsVsEggman2, Characters_MechTails },
+			{ LevelIDs_SonicVsShadow2, Characters_Sonic },
+			{ LevelIDs_HotShot, Characters_Shadow },
+			{ LevelIDs_TailsVsEggman1, Characters_MechEggman },
+			{ LevelIDs_FlyingDog, Characters_Rouge },
+			{ LevelIDs_SonicVsShadow1, Characters_Shadow },
+			{ LevelIDs_EggGolemE, Characters_MechEggman },
+			{ LevelIDs_KnucklesVsRouge, Characters_Rouge },
+			{ LevelIDs_TailsVsEggman2, Characters_MechEggman },
+			{ LevelIDs_SonicVsShadow2, Characters_Shadow },
+			{ LevelIDs_Biolizard, Characters_Shadow },
+			{ LevelIDs_FinalHazard, Characters_Sonic }
 		};
 
 		static inline StageSelectLevel BossSelect = { 0, 0, 8, 4 };
