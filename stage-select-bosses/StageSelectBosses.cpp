@@ -229,7 +229,6 @@ void StageSelectBosses::LoadAssets() {
 		return;
 	}
 
-	// NJS_TEXANIM anims = (&stageSelectAnimations)[0x21 + (&dword_8A0560)[LevelIDs_FinalRush]];
 	ResizeTextureList(&StageSelectBosses::BossTexture, StageSelectBosses::BossTexName);
 	LoadTextureList("stageMapBoss", &StageSelectBosses::BossTexture);
 	njSetTexture(&StageSelectBosses::BossTexture);
