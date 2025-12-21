@@ -14,7 +14,12 @@ FunctionPointer(void, DrawLevelPane, (int* a1), 0x676690);
 FunctionPointer(void, SaveMenuData, (), 0x673AE0);
 DataPointer(DWORD, LastMenuNumber, 0x1A559E8);
 DataPointer(DWORD, ShouldDrawStageMenuData, 0x1D1BEF8);
+DataPointer(DWORD, dword_1A559E8, 0x1A559E8);
 DataPointer(DWORD, dword_1AEE2FC, 0x1AEE2FC);
+DataPointer(BYTE, byte_174AFE0, 0x174AFE0);
+DataPointer(BYTE, IsInSequence, 0x1DEB31E);
+DataPointer(WORD, SequenceNoAndPos, 0x1DEB31F);
+DataPointer(BYTE, SequenceEventNo, 0x1DEB321);
 
 class StageSelectBosses {
 	public:

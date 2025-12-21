@@ -302,21 +302,32 @@ signed int StageSelectBosses::StageSelectMenu() {
 				PlaySoundProbably(32769, 0, 0, 0);
 				SaveMenuData();
 				LastMenuNumber = 3;
-				ShouldDrawStageMenuData = 0;
 				dword_1AEE2FC = 0;
+				ShouldDrawStageMenuData = 0;
 				StageSelectData->DrawAtAll = 0;
 				StageSelectData->field_4 = 0;
 				CurrentSubMenu = 5;
-				NextGameMode = 12;
 				return 0;
 			}
 		} else if (CurrentSubMenu == 5) {
-			hStageSelectMenu.Original();
 			int index = (StageSelectBosses::BossSelectRow * 6) + StageSelectBosses::BossSelectCol;
 			std::pair<LevelIDs, Characters> selection = StageSelectBosses::BossStageLevelData[index];
 			SetCurrentLevel(selection.first);
-			CurrentCharacter = selection.second;
+			if (isFirstStageLoad != 1 || negative_2 == -2) {
+				CurrentCharacter = selection.second;
+			} else {
+				CurrentCharacter = negative_2;
+				negative_2 = -2;
+			}
+
+			MissionNum = 0;
+			byte_174AFE0 = 0;
+			TwoPlayerMode = 0;
+			CurrentDemoState = DemoState_None;
 			NextGameMode = GameMode_StartLevel;
+			IsInSequence = 0;
+			SequenceNoAndPos = 0;
+			SequenceEventNo = 1;
 			return 1;
 		}
 	}
