@@ -1,9 +1,12 @@
 #pragma once
+#include <string>
+#include <unordered_map>
 
 DataArray(NJS_TEXLIST, stageSelectTextures, 0xC68B68, 4);
 DataPointer(NJS_TEXANIM, stageSelectAnimations, 0xC68C50);
 DataPointer(DWORD, StageMapScroll, 0x1A4A964);
 DataPointer(float, StageSelectColumnOffset, 0x1AEE764);
+DataArray(int, StageMapStageEnabled, 0x1A4A974, 33);
 DataPointer(DWORD, CanSelectStage, 0x1D1BEC8);
 DataPointer(float, PanelPosX, 0x1A4A968);
 DataPointer(float, PanelPosY, 0x1A4A96C);
@@ -31,6 +34,7 @@ class StageSelectBosses {
 
 	private:
 		static void DrawBossSelect();
+		static bool IsStageUnlocked(LevelIDs level);
 		static inline NJS_TEXLIST BossTexture = { nullptr, 1 };
 		static inline std::string BossTexFileNames[20] = {
 			std::string("stg_stagechr_boss           "),
@@ -136,6 +140,40 @@ class StageSelectBosses {
 			{ LevelIDs_SonicVsShadow2, Characters_Shadow },
 			{ LevelIDs_Biolizard, Characters_Shadow },
 			{ LevelIDs_FinalHazard, Characters_Sonic }
+		};
+
+		static inline std::unordered_map<LevelIDs, int> LevelToStageIndex = {
+			{ LevelIDs_HiddenBase, 0 },
+			{ LevelIDs_PyramidCave, 1 },
+			{ LevelIDs_DeathChamber, 2 },
+			{ LevelIDs_EggQuarters, 3 },
+			{ LevelIDs_SandOcean, 4 },
+			{ LevelIDs_DryLagoon, 5 },
+			{ LevelIDs_WeaponsBed, 6 },
+			{ LevelIDs_PrisonLane, 7 },
+			{ LevelIDs_WildCanyon, 8 },
+			{ LevelIDs_IronGate, 9 },
+			{ LevelIDs_SecurityHall, 10 },
+			{ LevelIDs_MetalHarbor, 11 },
+			{ LevelIDs_SkyRail, 12 },
+			{ LevelIDs_WhiteJungle, 13 },
+			{ LevelIDs_GreenForest, 14 },
+			{ LevelIDs_PumpkinHill, 15 },
+			{ LevelIDs_AquaticMine, 16 },
+			{ LevelIDs_GreenHill, 17 },
+			{ LevelIDs_RadicalHighway, 19 },
+			{ LevelIDs_MissionStreet, 21 },
+			{ LevelIDs_ChaoWorld, 22 },
+			{ LevelIDs_CityEscape, 23 },
+			{ LevelIDs_CrazyGadget, 24 },
+			{ LevelIDs_EternalEngine, 25 },
+			{ LevelIDs_CosmicWall, 26 },
+			{ LevelIDs_MeteorHerd, 27 },
+			{ LevelIDs_LostColony, 28 },
+			{ LevelIDs_CannonsCoreS, 29 },
+			{ LevelIDs_FinalChase, 30 },
+			{ LevelIDs_FinalRush, 31 },
+			{ LevelIDs_MadSpace, 32 }
 		};
 
 		static inline StageSelectLevel BossSelect = { 0, 0, 8, 4 };

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "StageSelectBosses.h"
-#include <string>
 
 using WndProc_t = LRESULT(__stdcall*)(HWND, UINT, WPARAM, LPARAM);
 FunctionHook<void> hCanDrawLevelPanel((intptr_t)0x676A60);
@@ -176,29 +175,48 @@ void StageSelectBosses::DrawMissionSelectPanel(char savedregs) {
 	hDrawMissionSelectPanel.Original(savedregs);
 }
 
+bool StageSelectBosses::IsStageUnlocked(LevelIDs level) {
+	if (level == LevelIDs_Route101280) {
+		return StageMapStageEnabled[18] || StageMapStageEnabled[20];
+	}
+
+	if (!StageSelectBosses::LevelToStageIndex.count(level)) {
+		return false;
+	}
+
+	return StageMapStageEnabled[StageSelectBosses::LevelToStageIndex[level]];
+}
+
 signed int StageSelectBosses::StageSelectMove(int direction) {
-	// TODO: Refactor this to properly handle all map states.
+	StageSelectLevel curSelection = StageSelectLevels[StageSelectLevelSelection];
 	if (!StageSelectBosses::BossIsSelected) {
-		StageSelectLevel curSelection = StageSelectLevels[StageSelectLevelSelection];
 		if (direction == StageSelectBosses::MOVE_UP && curSelection.Level == LevelIDs_GreenHill) {
 			StageSelectBosses::BossIsSelected = true;
 			return 1;
-		} else if (
-			direction == StageSelectBosses::MOVE_RIGHT &&
-			(
-				(curSelection.Level == LevelIDs_KartRace && curSelection.Character == Characters_Rouge) ||
-				curSelection.Level == LevelIDs_MissionStreet
+		}
+
+		if (StageSelectBosses::IsStageUnlocked(LevelIDs_GreenHill)) {
+			if (
+				direction == StageSelectBosses::MOVE_RIGHT &&
+				(
+					(curSelection.Level == LevelIDs_KartRace && curSelection.Character == Characters_Rouge) ||
+					curSelection.Level == LevelIDs_MissionStreet
 				)
 			) {
-			hStageSelectMove.Original(direction);
-			StageSelectBosses::BossIsSelected = true;
-			return 1;
-		} else if (direction == StageSelectBosses::MOVE_LEFT && curSelection.Level == LevelIDs_AquaticMine) {
-			hStageSelectMove.Original(direction);
-			StageSelectBosses::BossIsSelected = true;
-			return 1;
+				hStageSelectMove.Original(direction);
+				StageSelectBosses::BossIsSelected = true;
+				return 1;
+			} else if (direction == StageSelectBosses::MOVE_LEFT && curSelection.Level == LevelIDs_AquaticMine) {
+				hStageSelectMove.Original(direction);
+				StageSelectBosses::BossIsSelected = true;
+				return 1;
+			}
 		}
 	} else if (direction == StageSelectBosses::MOVE_DOWN) {
+		if (!StageSelectBosses::IsStageUnlocked(LevelIDs_GreenHill)) {
+			return 0;
+		}
+
 		StageSelectLevelSelection = StageSelectBosses::GREEN_HILL_INDEX;
 		StageSelectBosses::BossIsSelected = false;
 		return 1;
@@ -214,7 +232,20 @@ signed int StageSelectBosses::StageSelectMove(int direction) {
 		return hStageSelectMove.Original(direction);
 	}
 
-	return hStageSelectMove.Original(direction);
+	int bossesCol = StageSelectBosses::BossSelect.Column;
+	int moveResult = hStageSelectMove.Original(direction);
+	StageSelectLevel newSelection = StageSelectLevels[StageSelectLevelSelection];
+	if (newSelection.Column > curSelection.Column && bossesCol > curSelection.Column && bossesCol < newSelection.Column) {
+		StageSelectBosses::BossIsSelected = true;
+		StageSelectLevelSelection = StageSelectBosses::GREEN_HILL_INDEX;
+		return 1;
+	} else if (newSelection.Column < curSelection.Column && bossesCol < curSelection.Column && bossesCol > newSelection.Column) {
+		StageSelectBosses::BossIsSelected = true;
+		StageSelectLevelSelection = StageSelectBosses::GREEN_HILL_INDEX;
+		return 1;
+	}
+
+	return moveResult;
 }
 
 void StageSelectBosses::LoadAssets() {
