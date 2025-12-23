@@ -180,7 +180,7 @@ bool StageSelectBosses::IsStageUnlocked(LevelIDs level) {
 		return StageMapStageEnabled[18] || StageMapStageEnabled[20];
 	}
 
-	if (!StageSelectBosses::LevelToStageIndex.count(level)) {
+	if (StageSelectBosses::LevelToStageIndex.find(level) == StageSelectBosses::LevelToStageIndex.end()) {
 		return false;
 	}
 
