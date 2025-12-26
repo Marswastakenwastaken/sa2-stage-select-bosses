@@ -40,8 +40,10 @@ class StageSelectBosses {
 	private:
 		static void DrawBossSelect();
 		static bool IsStageUnlocked(LevelIDs level);
+		static const inline size_t BossTexLen = 23;
 		static inline NJS_TEXLIST BossTexture = { nullptr, 1 };
-		static inline std::string BossTexFileNames[20] = {
+		static inline NJS_TEXNAME BossTexName[StageSelectBosses::BossTexLen];
+		static inline std::string BossTexFileNames[23] = {
 			std::string("stg_stagechr_boss           "),
 			std::string("stg_stagechr_boss_name      "),
 			std::string("stg_stagechr_boss_bf        "),
@@ -61,31 +63,12 @@ class StageSelectBosses {
 			std::string("stg_stagechr_boss_tail2     "),
 			std::string("stg_stagechr_boss_sn2       "),
 			std::string("stg_stagechr_boss_bio       "),
-			std::string("stg_stagechr_boss_fin       ")
+			std::string("stg_stagechr_boss_fin       "),
+			std::string("stg_plate_boss_btn_m        "),
+			std::string("stg_info_boss_spr           "),
+			std::string("stg_stagesel_boss_csol      ")
 		};
-		static inline NJS_TEXNAME BossTexName[20] = {
-			{ (void*)StageSelectBosses::BossTexFileNames[0].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[1].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[2].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[3].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[4].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[5].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[6].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[7].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[8].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[9].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[10].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[11].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[12].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[13].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[14].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[15].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[16].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[17].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[18].c_str(), 0, 0 },
-			{ (void*)StageSelectBosses::BossTexFileNames[19].c_str(), 0, 0 }
-		};
-		static inline NJS_TEXANIM BossTextureAnims[38] = {
+		static inline NJS_TEXANIM BossTextureAnims[41] = {
 			{ 0x3B, 0x3B, 0x1D, 0x1D, 8, 8, 0xF4, 0xF4, 0, 0 },
 			{ 0x3B, 0x3B, 0x1D, 0x1D, 8, 8, 0xF4, 0xF4, 2, 0 },
 			{ 0x3B, 0x3B, 0x1D, 0x1D, 8, 8, 0xF4, 0xF4, 3, 0 },
@@ -122,8 +105,11 @@ class StageSelectBosses {
 			{ 141, 12, 0, 0, 4, 175, 74, 181, 1, 0 },		// knuckles
 			{ 146, 12, 0, 0, 81, 175, 154, 181, 1, 0 },		// tails 2
 			{ 202, 12, 0, 0, 4, 183, 105, 189, 1, 0 },		// sonic 2
-			{ 175, 15, 0, 0, 111, 183, 198, 190, 1, 0 },	// biolizard - eq
-			{ 154, 12, 0, 0, 4, 191, 81, 197, 1, 0 }		// final hazard (extend a little) - lc
+			{ 175, 15, 0, 0, 111, 183, 198, 190, 1, 0 },	// biolizard
+			{ 154, 12, 0, 0, 4, 191, 81, 197, 1, 0 },		// final hazard
+			{ 255, 186, 0, 0, 0, 0, 255, 186, 20, 0 },
+			{ 49, 49, 24, 24, 200, 152, 249, 250, 21, 0 },
+			{ 76, 76, 38, 38, 0, 0, 152, 152, 22, 0 }
 		};
 
 		static inline std::pair<LevelIDs, Characters> BossStageLevelData[18] = {

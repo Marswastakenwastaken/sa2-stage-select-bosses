@@ -21,6 +21,10 @@ void StageSelectBosses::Init() {
 	hStageSelectMove.Hook(StageSelectBosses::StageSelectMove);
 	hDrawMissionSelectPanel.Hook(StageSelectBosses::DrawMissionSelectPanel);
 	StageSelectBosses::OldWndProc = (WNDPROC)SetWindowLong(GetActiveWindow(), GWLP_WNDPROC, (LONG_PTR)StageSelectBosses::WndProc);
+
+	for (int i = 0; i < StageSelectBosses::BossTexLen; i++) {
+		StageSelectBosses::BossTexName[i] = { (void*)StageSelectBosses::BossTexFileNames[i].c_str(), 0, 0 };
+	}
 }
 
 void StageSelectBosses::CanDrawLevelPanel() {
@@ -45,9 +49,9 @@ void StageSelectBosses::CanDrawLevelPanel() {
 		panelSprite.p.x = pos.x;
 		panelSprite.p.y = pos.y;
 		panelSprite.ang = 0;
-		panelSprite.tlist = &stageSelectTextures;
-		panelSprite.tanim = &stageSelectAnimations;
-		njDrawSprite2D_0(&panelSprite, 92, -95, 0x22u);
+		panelSprite.tlist = &StageSelectBosses::BossTexture;
+		panelSprite.tanim = StageSelectBosses::BossTextureAnims;
+		njDrawSprite2D_0(&panelSprite, 38, -95, 0x22u);
 
 		_constant_attr_or_ = nj_constant_attr_or_;
 		nj_constant_material_.a = 0;
@@ -67,6 +71,8 @@ void StageSelectBosses::DrawLevelPanel(int* a1) {
 		int spritePos = 0x21;
 		NJS_VECTOR pos = { 0, 0, 0 };
 		NJS_SPRITE sprite = {};
+		sprite.tlist = &StageSelectBosses::BossTexture;
+		sprite.tanim = StageSelectBosses::BossTextureAnims;
 
 		for (int i = 0; i < 18; ++i) {
 			pos.x = (double)(i % 6u) * 38.0 + PanelPosX - 92.5;
@@ -75,15 +81,11 @@ void StageSelectBosses::DrawLevelPanel(int* a1) {
 			sprite.p.y = pos.y;
 			sprite.sx = 0.5f;
 			sprite.sy = 0.5f;
-			sprite.tlist = &StageSelectBosses::BossTexture;
-			sprite.tanim = StageSelectBosses::BossTextureAnims;
 			njDrawSprite2D_0(&sprite, i + 1, -89, 0x20u);
 
 			sprite.sx = 0.7f;
 			sprite.sy = 0.7f;
-			sprite.tlist = &stageSelectTextures;
-			sprite.tanim = &stageSelectAnimations;
-			njDrawSprite2D_0(&sprite, 88, -90, 0x20u);
+			njDrawSprite2D_0(&sprite, 39, -90, 0x20u);
 		}
 
 		pos.x = PanelPosX - 110.0f;
@@ -92,8 +94,6 @@ void StageSelectBosses::DrawLevelPanel(int* a1) {
 		sprite.sy = 1.0;
 		sprite.p.x = pos.x;
 		sprite.p.y = pos.y;
-		sprite.tlist = &StageSelectBosses::BossTexture;
-		sprite.tanim = StageSelectBosses::BossTextureAnims;
 		njDrawSprite2D_0(&sprite, 19, -93, 0x20u);
 		return;
 	}
@@ -123,9 +123,9 @@ void StageSelectBosses::DrawMissionSelectPanel(char savedregs) {
 		panelSprite.p.x = pos.x;
 		panelSprite.p.y = pos.y;
 		panelSprite.ang = 0;
-		panelSprite.tlist = &stageSelectTextures;
-		panelSprite.tanim = &stageSelectAnimations;
-		njDrawSprite2D_0(&panelSprite, 92, -95, 0x22u);
+		panelSprite.tlist = sprite.tlist = &StageSelectBosses::BossTexture;
+		panelSprite.tanim = sprite.tanim = StageSelectBosses::BossTextureAnims;
+		njDrawSprite2D_0(&panelSprite, 38, -95, 0x22u);
 
 		argb = 1.0f;
 		_constant_attr_or_ = nj_constant_attr_or_;
@@ -142,15 +142,11 @@ void StageSelectBosses::DrawMissionSelectPanel(char savedregs) {
 			sprite.p.y = pos.y;
 			sprite.sx = 0.5f;
 			sprite.sy = 0.5f;
-			sprite.tlist = &StageSelectBosses::BossTexture;
-			sprite.tanim = StageSelectBosses::BossTextureAnims;
 			njDrawSprite2D_0(&sprite, i + 1, -89, 0x20u);
 
 			sprite.sx = 0.7f;
 			sprite.sy = 0.7f;
-			sprite.tlist = &stageSelectTextures;
-			sprite.tanim = &stageSelectAnimations;
-			njDrawSprite2D_0(&sprite, 88, -90, 0x20u);
+			njDrawSprite2D_0(&sprite, 39, -90, 0x20u);
 		}
 
 		int index = (StageSelectBosses::BossSelectRow * 6) + StageSelectBosses::BossSelectCol;
@@ -158,7 +154,7 @@ void StageSelectBosses::DrawMissionSelectPanel(char savedregs) {
 		sprite.p.y = (double)(index / 6u) * 35.0f + PanelPosY - 5.0f;
 		sprite.sx = 0.55f;
 		sprite.sy = 0.55f;
-		njDrawSprite2D_0(&sprite, 90, -88, 0x20u);
+		njDrawSprite2D_0(&sprite, 40, -88, 0x20u);
 
 		pos.x = PanelPosX - 110.0f;
 		pos.y = PanelPosY - 50.0f;
@@ -166,8 +162,6 @@ void StageSelectBosses::DrawMissionSelectPanel(char savedregs) {
 		sprite.sy = 1.0;
 		sprite.p.x = pos.x;
 		sprite.p.y = pos.y;
-		sprite.tlist = &StageSelectBosses::BossTexture;
-		sprite.tanim = StageSelectBosses::BossTextureAnims;
 		njDrawSprite2D_0(&sprite, 20 + index, -93, 0x20u);
 		return;
 	}
@@ -257,7 +251,6 @@ void StageSelectBosses::LoadAssets() {
 
 	ResizeTextureList(&StageSelectBosses::BossTexture, StageSelectBosses::BossTexName);
 	LoadTextureList("stageMapBoss", &StageSelectBosses::BossTexture);
-	njSetTexture(&StageSelectBosses::BossTexture);
 }
 
 void StageSelectBosses::FreeAssets() {
@@ -371,8 +364,8 @@ void StageSelectBosses::DrawBossSelect() {
 		0.7f,
 		0.7f,
 		0,
-		&stageSelectTextures,
-		&stageSelectAnimations
+		&StageSelectBosses::BossTexture,
+		StageSelectBosses::BossTextureAnims
 	};
 
 	float argb = StageSelectBosses::BossIsSelected ? 1.0f : 0.8f;
@@ -389,7 +382,7 @@ void StageSelectBosses::DrawBossSelect() {
 		bossSprite.sy = hoverAnim;
 		selectedSprite.sx = hoverAnim;
 		selectedSprite.sy = hoverAnim;
-		njDrawSprite2D_0(&selectedSprite, 90, -99, 0x20u);
+		njDrawSprite2D_0(&selectedSprite, 40, -99, 0x20u);
 	}
 
 	njDrawSprite2D_0(&bossSprite, 0, -100, 0x22u);
